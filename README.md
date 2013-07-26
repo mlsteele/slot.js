@@ -1,30 +1,45 @@
 Slot.js
 =======
 
-Slot.js can create slots.
-A slot is responsible for firing only the latest registered callback.
-A slot will not fire old callbacks.
+## Description
+Slot.js is an attempt to ease the pain of callback management.
+A slot is responsible for firing only the latest registered callback in that slot.
+A slot will not fire any old callbacks other than the latest registered callback.
 
-Usage:
+## Usage
 
     slot = make_slot()
 
-    # to fire immediately
-    # for synchronous data
-    do slot (data) -> render(data)
+    # This is an example callback
+    callback = (data) -> console.log(data)
+    # Usually callbacks will involve rendering to a view
+    # and checking for errors.
 
-    # to register a callback
-    # for asynchronous data
-    # assume async_fetcher takes 2 arguments
-    #    a `url` and a `callback`
+    # Slots return the original callback.
+    # So in the simplest case this
+    callback "foobar"
+    # is equivalent to this
+    (slot callback) "foobar"
+
+    # Let's register a callback for asynchronous data.
+    # Assume async_fetcher takes 2 arguments: `url` and `callback`.
     async_fetcher 'http://data.please/foobar', slot (data) ->
-      render(data)
+      render data
 
-    # to clear the slot
-    # so that no old callbacks fire
-    slot ->
+    # After we register this next callback, we can rest assured that the
+    # callback for data from /foobar will NOT be called after the callback for
+    # data from /foobaz because they are registered to the same slot and
+    # /foobaz comes later.
+    async_fetcher 'http://data.please/foobaz', slot (data) ->
+      render data
+    # If /foobar were to return after /foobaz,
+    # the /foobar callback would be ignored.
 
-TODO:
+    # Slots are automatically cleared when they are called with a new callback.
+    # To explicitly clear a slot so that no old callbacks fire.
+    slot.clear()
+
+## TODO
 - test with non-anonymous callback functions
 - add slot.clear() method
 - fix file structure, separate slot.js from test
