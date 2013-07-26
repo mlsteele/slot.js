@@ -1,0 +1,23 @@
+{
+  "name": "Slot.js",
+  "version": "0.0.0",
+  "description": "Callback manager.",
+  "main": "index.js",
+  "dependencies": {
+    "jasmine-node": "~1.10.2",
+    "coffee-script": "~1.6.3"
+  },
+  "devDependencies": {
+  },
+  "scripts": {
+    "test": "jasmine-node spec/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mlsteele/slot.js.git"
+  },
+  "author": "Miles Steele <miles@milessteele.com>",
+  "license": "Open",
+  "readmeFilename": "README.md",
+  "gitHead": "fe8fdd0677c9339cb7bc3ee121ebc895a2887706"
+}
