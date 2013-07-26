@@ -76,3 +76,32 @@ describe 'make_slot()', ->
       expect(target).toEqual 'fetched_data_2'
       jasmine.Clock.tick(120)
       expect(target).toEqual 'fetched_data_2'
+
+    it 'and the .clear() function', ->
+      target = 'not_yet_filled'
+      setter = (data) -> target = data
+      slot = make_slot setter
+
+      plantTimeout 200, slot -> setter 'fetched_data_1'
+      plantTimeout 100, slot -> setter 'fetched_data_2'
+
+      expect(target).toEqual 'not_yet_filled'
+      slot.clear()
+      jasmine.Clock.tick(120)
+      expect(target).toEqual 'not_yet_filled'
+      jasmine.Clock.tick(120)
+      expect(target).toEqual 'not_yet_filled'
+
+    # it 'even when they are named functions', ->
+    #   target = 'not_yet_filled'
+    #   setter = (data) -> target = data
+    #   slot = make_slot setter
+
+    #   plantTimeout 200, slot -> setter 'fetched_data_1'
+    #   plantTimeout 100, slot -> setter 'fetched_data_2'
+
+    #   expect(target).toEqual 'not_yet_filled'
+    #   jasmine.Clock.tick(120)
+    #   expect(target).toEqual 'fetched_data_2'
+    #   jasmine.Clock.tick(120)
+    #   expect(target).toEqual 'fetched_data_2'
