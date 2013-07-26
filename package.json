@@ -10,7 +10,7 @@
   "devDependencies": {
   },
   "scripts": {
-    "test": "jasmine-node spec/"
+    "test": "jasmine-node --coffee spec/"
   },
   "repository": {
     "type": "git",

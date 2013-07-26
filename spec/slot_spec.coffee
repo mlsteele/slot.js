@@ -1,12 +1,6 @@
+make_slot = require '../src/slot'
 plantTimeout = (ms, cb) -> setTimeout cb, ms
 
-make_slot = ->
-  latest = null
-  (setter) ->
-    latest = setter
-    ->
-      if setter is latest
-        latest.apply this, arguments
 
 describe 'make_slot()', ->
   describe 'is transparent for synchronous fetchers', ->
