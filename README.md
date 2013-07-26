@@ -39,6 +39,16 @@ A slot will not fire any old callbacks other than the latest registered callback
     # To explicitly clear a slot so that no old callbacks fire.
     slot.clear()
 
+## Use In Browser
+Slots were originally intended for browser. The `slot.coffee` file uses
+
+    module.exports = make_slot
+
+for convenience during testing. To use slots in the browser, replace that line
+with whatever import system you are using, or copy the function into your
+helpers file.
+
+
 ## TODO
 - test with non-anonymous callback functions
 - add slot.clear() method
