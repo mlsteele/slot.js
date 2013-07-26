@@ -50,5 +50,4 @@ helpers file.
 
 
 ## TODO
-- test with non-anonymous callback functions
 - fix file structure, separate slot.js from test

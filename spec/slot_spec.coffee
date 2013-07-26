@@ -28,6 +28,11 @@ describe 'make_slot()', ->
       do slot -> setter.apply {data: 'fetched_data_1'}
       expect(target).toEqual 'fetched_data_1'
 
+    it 'by failing to call objects', ->
+      slot = make_slot()
+      slotted_callback = slot {not_a_function: 'foo'}
+      expect(slotted_callback).toThrow "Object #<Object> has no method 'apply'"
+
   describe 'works with expected async callbacks', ->
     beforeEach -> jasmine.Clock.useMock()
 
@@ -92,16 +97,24 @@ describe 'make_slot()', ->
       jasmine.Clock.tick(120)
       expect(target).toEqual 'not_yet_filled'
 
-    # it 'even when they are named functions', ->
-    #   target = 'not_yet_filled'
-    #   setter = (data) -> target = data
-    #   slot = make_slot setter
+    it 'even when they are named functions', ->
+      target = 'not_yet_filled'
+      last_retval = 0
+      dynamic_source = -> last_retval++
+      setter = -> target = dynamic_source()
+      slot = make_slot setter
 
-    #   plantTimeout 200, slot -> setter 'fetched_data_1'
-    #   plantTimeout 100, slot -> setter 'fetched_data_2'
+      expect(target).toEqual 'not_yet_filled'
+      setter()
+      expect(target).toEqual 0
+      setter()
+      expect(target).toEqual 1
 
-    #   expect(target).toEqual 'not_yet_filled'
-    #   jasmine.Clock.tick(120)
-    #   expect(target).toEqual 'fetched_data_2'
-    #   jasmine.Clock.tick(120)
-    #   expect(target).toEqual 'fetched_data_2'
+      plantTimeout 200, slot setter
+      plantTimeout 100, slot setter
+
+      expect(target).toEqual 1
+      jasmine.Clock.tick(120)
+      expect(target).toEqual 2
+      jasmine.Clock.tick(120)
+      expect(target).toEqual 2
