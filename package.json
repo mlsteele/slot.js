@@ -2,7 +2,7 @@
   "name": "callback-slot",
   "version": "0.0.0",
   "description": "Callback conflict management using slots.",
-  "main": "slot/slot.js",
+  "main": "index.js",
   "dependencies": {
   },
   "devDependencies": {
@@ -11,7 +11,7 @@
   },
   "scripts": {
     "test": "jasmine-node --coffee spec/",
-    "build": "coffee -o build -c src/slot.coffee"
+    "build": "coffee -cp src/slot.coffee > index.js"
   },
   "repository": {
     "type": "git",
